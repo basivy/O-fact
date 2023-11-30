@@ -1,0 +1,65 @@
+@property --progress-value {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+  }
+  
+  @keyframes progress1 {
+    to {
+      --progress-value: 30;
+    }
+  }
+  
+  @keyframes progress2 {
+    to {
+      --progress-value: 100;
+    }
+  }
+  
+  .circle-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: 
+    radial-gradient(closest-side, white 60%, transparent 66% 100%),
+      conic-gradient(#2BC04C calc(var(--progress-value) * 1%), #363637 0);
+    animation: progress1 5s 1 forwards;
+  }
+  
+  .circle-progress::before {
+    counter-reset: percentage var(--progress-value);
+    content: counter(percentage) '%';
+    animation: progress1 5s 1 forwards;
+  }
+
+
+  .circle-progress2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: 
+      radial-gradient(closest-side, white 60%, transparent 66% 100%),
+      conic-gradient(#2BC04C calc(var(--progress-value) * 1%), #363637 0);
+    animation: progress2 0.6s 1 forwards;
+  }
+  
+  .circle-progress2::before {
+    counter-reset: percentage var(--progress-value);
+    content: counter(percentage) '%';
+    animation: progress2 0.6s 1 forwards;
+  }
+
+  .Train-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    height: 100vh;
+  }
