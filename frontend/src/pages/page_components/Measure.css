@@ -1,0 +1,112 @@
+.dash {
+    
+    padding: 20px; 
+}
+.dash- {
+    padding-bottom: 10px;
+    padding-top: 2px;
+}
+
+.textcol {
+    margin-right: 10px;
+    height: 150px;
+    
+}
+
+.tem {
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px; 
+    padding: 40px;
+}
+
+.heat {
+    background-color: rgb(48, 47, 47);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    
+    padding: 20px;
+    color: blanchedalmond;
+    
+}
+
+.buttoncircle {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    margin-right: 40px;
+    background-color: rgb(32, 31, 31);
+}
+
+.bonno {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 10px;
+    padding-top: 40px;
+}
+
+
+
+
+
+
+
+
+.something {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    padding-top: 15px;
+    text-align: center;
+
+}
+
+
+
+
+
+
+.chart-bar {
+    width: 650px;
+    padding: 40px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title-chart{
+    position: relative;
+    left: 0px;
+    padding-bottom: 5px;
+    color: rgb(138, 132, 132);
+}
+
+.classN {
+    border-radius: 50%;
+    text-align: center;
+    padding: 3;
+    
+}
+
+
+
+
+
+.cdd {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    left: 20px;
+
+}
+
+.heaton {
+    font-size: 25px;
+}
+
+
+
+
+

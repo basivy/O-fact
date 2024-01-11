@@ -12,14 +12,17 @@ function Processing() {
     <div className='container-1'>
       <div className='Sidebar'>
       <div className='container-sidebar'>
-        <div className='ham'><h1><a href='/'>...</a></h1></div>  
+        <div className='ham'><h4><i
+class=
+"fi fi-sr-align-justify"
+></i></h4></div>  
         <div className='box-savename'><input className='savename' placeholder="Untitled"></input></div>
         <div className='botton-processing'>
           <ul className='ui-botton-processing'>
-            <li className='li-botton-processing'><NavLink to='/start/Measure'><button className='button-li'>Measure</button></NavLink></li>
-            <li className='li-botton-processing'><NavLink to='/start/Label'><button className='button-li'>Label</button></NavLink></li>
-            <li className='li-botton-processing'><NavLink to='/start/Train'><button className='button-li'>Train</button></NavLink></li>
-            <li className='li-botton-processing'><NavLink to='/start/Use'><button className='button-li'>Use</button></NavLink></li>
+            <li className='li-botton-processing'><NavLink to='/start/Measure'><button className='button-li clink-1'><i class="onon fi fi-sr-chart-simple-horizontal"></i>&nbsp;&nbsp;&nbsp;<h7 className='font-li'>Measure</h7></button></NavLink></li>
+            <li className='li-botton-processing'><NavLink to='/start/Label'><button className='button-li clink-2'><i class="onon fi fi-rr-edit"></i>&nbsp;&nbsp;&nbsp;<h7 className='font-li'>Label</h7></button></NavLink></li>
+            <li className='li-botton-processing'><NavLink to='/start/Train'><button className='button-li clink-3'><i class="onon fi fi-rr-cube"></i>&nbsp;&nbsp;&nbsp;<h7 className='font-li'>Train</h7></button></NavLink></li>
+            <li className='li-botton-processing'><NavLink to='/start/Use'><button className='button-li clink-4'><i class="onon fi fi-rr-checkbox"></i>&nbsp;&nbsp;&nbsp;<h7 className='font-li'>Use</h7></button></NavLink></li>
           </ul>
         </div>
         <div className='Start'>
