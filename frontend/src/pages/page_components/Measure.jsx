@@ -130,7 +130,7 @@ const Measure = () => {
  </div>
  </div>
  <div class="col">
-         <div >0
+         <div >
           
 
            

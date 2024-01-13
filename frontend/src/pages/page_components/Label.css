@@ -25,6 +25,10 @@ img{
     padding-left: 30px;
 }
 
-.file {
-    
+.input_csv{
+    width: 100px;
+    border: 0px;
+    border-radius: 9px;
+    padding: 8px;
+    background-color: rgb(243, 238, 238);
 }

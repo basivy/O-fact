@@ -6,7 +6,7 @@ function Label() {
   const [csvFiles, setCsvFiles] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/csvdata')
+    axios.get('http://localhost:3000/csvdata')
       .then(response => {
         setCsvFiles(response.data.files);
       })
@@ -22,7 +22,8 @@ function Label() {
         {csvFiles.map((file, index) => (
           <div key={index} className='file col-12 col-sm-6 col-md-4 col-lg-2 '>
             <img src={imageSrc} alt={`Image ${index}`} />
-            <h5 className='label-name'>{file}</h5>
+            <input className='input_csv' placeholder={file}></input>
+            
           </div>
         ))}
       </div>
