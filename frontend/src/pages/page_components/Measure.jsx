@@ -3,14 +3,10 @@ import Chart from 'chart.js/auto';
 import io from 'socket.io-client';
 import "./Measure.css";
 
-const socket = io('http://localhost:4000');
+const socket = io('http://localhost:3000');
 let chart; 
 
 const Measure = () => {
-  
-  
-
-
   const chartRef = useRef(null);
 
   useEffect(() => {

@@ -1,38 +1,27 @@
 const express = require('express');
-const socket = require('socket.io');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-app.use(bodyParser.json());
-const fs = require('fs');
 const csv = require('csv-parser');
-
-let lastUpdatedColumns = [];
+const fs = require('fs');
+const app = express();
+const server = require('http').createServer(app); // Create a server for Socket.IO
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
+const PORT = 4000; // process.env.PORT || 
 let lastFileSize = 0;
 const rows = [];
 const filePath = './random_output.csv';
 
-const server = app.listen(4000, () => {
-  console.log('Server started on port 4000');
-});
+app.use(express.json());
 
-const io = socket(server, {
-  cors: {
-    origin: '*',
-    methods: ['POST'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
-  }
-});
+// Socket.IO Connection Event
 
-io.sockets.on('connection', (socket) => {
-  console.log(`New connection: ${socket.id}`);
-  sendData(socket);
-});
 
-function sendData(socket) {
+// Function to Read CSV File
+function readCSVFile() {
   const currentFileSize = fs.statSync(filePath).size;
-
   if (currentFileSize !== lastFileSize) {
     rows.length = 0;
     fs.createReadStream(filePath)
@@ -44,13 +33,26 @@ function sendData(socket) {
         const lastRow = rows[rows.length - 1];
         const values = Object.values(lastRow);
         console.log(values);
-        socket.emit('lastRowValues', values);
+        io.emit('lastRowValues', values); // Emit to all connected clients
       });
 
     lastFileSize = currentFileSize;
   }
-
-  setTimeout(() => {
-    sendData(socket);
-  }, 2000);
 }
+
+// Endpoint to Send Last Row Data
+app.get('/sendData', (req, res) => {
+  const lastRow = rows[rows.length - 1];
+  const values = Object.values(lastRow);
+  res.status(200).json({ lastRowValues: values });
+});
+
+// Interval for File Checking
+setInterval(() => {
+  readCSVFile();
+}, 2000);
+
+// Server Listening
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
