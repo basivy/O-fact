@@ -4,10 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Processing from './pages/Processing'
 import { BrowserRouter } from 'react-router-dom';
-
 import React from "react";
-
-
 
 function App() {
 
@@ -17,7 +14,6 @@ function App() {
     <>
       <header>
         <Processing/>
-
       </header>
     </>
   )

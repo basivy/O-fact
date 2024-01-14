@@ -1,27 +1,51 @@
 const express = require('express');
 const { exec } = require('child_process');
-const app = express();
+const csv = require('csv-parser');
 const fs = require('fs');
+const app = express();
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
-const server = http.createServer();
-const io = require('socket.io')(server);
+const server = http.createServer(app);
+const io = require('socket.io')(server, { cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] } });
+const PORT = 3000;
+let rows = [];
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('messageFromPython', (data) => {
-    console.log('Message from Python:', data);
-  });
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
+function readCSVFile() {
+  let lastFileSize = 0;
+  const rows = [];
+  const filePath = './python.ML/random_output.csv';
+  const currentFileSize = fs.statSync(filePath).size;
+  if (currentFileSize !== lastFileSize) {
+    rows.length = 0;
+    fs.createReadStream(filePath)
+      .pipe(csv())
+      .on('data', (row) => {
+        rows.push(row);
+      })
+      .on('end', () => {
+        const lastRow = rows[rows.length - 1];
+        const values = Object.values(lastRow);
+        console.log(values);
+        io.emit('lastRowValues', values); 
+      });
+    lastFileSize = currentFileSize;
+  }
+}
 
-app.use(express.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
+
+app.get('/sendData', (req, res) => {
+  const lastRow = rows[rows.length - 1];
+  const values = Object.values(lastRow);
+  res.status(200).json({ lastRowValues: values });
 });
 
 app.get('/csvdata', (req, res) => {
@@ -54,8 +78,11 @@ app.get('/train', (req, res) => {
 });
 
 
-const PORT = 3000;
-app.listen(PORT, () => {
+setInterval(() => {
+  readCSVFile();
+}, 15000);
+
+
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  
 });
