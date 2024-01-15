@@ -6,7 +6,7 @@ from joblib import dump
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv('D:/last/backend/csv/A.csv')
+df = pd.read_csv('/Users/rattakait/Documents/O-fact/backend/csv/A.csv')
 D = df.shape[1] - 1
 X = df.iloc[:,:11].values
 y = df.iloc[:,D:]

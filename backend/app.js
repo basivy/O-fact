@@ -61,7 +61,7 @@ app.get('/csvdata', (req, res) => {
 });
 
 app.get('/train', (req, res) => {
-  exec('python ./python.ML/train.py', (error, stdout, stderr) => {
+  exec('python3 ./python.ML/train.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
       res.status(500).json({ error: 'Internal server error' });
