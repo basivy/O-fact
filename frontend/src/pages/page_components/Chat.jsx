@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import io from 'socket.io-client';
-const socket = io('http://localhost:3000/sendData');
 import "./Chat.css";
+
+
+
+const socket = io('http://localhost:3000', { transports: ['polling'] });
 let chart; 
 
 function Chat() {
@@ -12,14 +15,13 @@ function Chat() {
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, 'rgba(43,192,76,1)');
       gradient.addColorStop(1, 'rgba(255,255,255,0)');
-  
+
+
       chart = new Chart(ctx, {
         type: 'line',
         options: {
-          
-          
           scales: {
-            y: {
+            y: { 
               type: 'linear',
               min: 0,
               max: 120,
@@ -36,8 +38,6 @@ function Chat() {
           },
           tension: 0.3,
           responsive: true,
-  
-  
           plugins: {
             legend: {
                 position: 'bottom', 
@@ -77,24 +77,53 @@ function Chat() {
           ]
         }
       });
-  
+
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/sendData');
+          const data = await response.json();
+          chart.data.datasets[0].data = data;
+          chart.update();if (chart) {
+            chart.data.datasets[0].data = data;
+            chart.update();
+          } else {
+            console.error('Chart instance is not defined.');
+          }
+        } 
+        catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      fetchData(); 
+    
+
+
+
       socket.on('lastRowValues', (res) => {
         chart.data.datasets[0].data = res;
         chart.update();
       });
-  
+      
       return () => {
         socket.disconnect();
         chart.destroy();
       };
+
+
     }, []);
 
 
 
     return (
-        <div className='chat'><canvas ref={chartRef} id="bar" /></div>
+        <div className='chat'>
+            <canvas ref={chartRef} id="bar" />
+        </div>
         
   )
 }
 
 export default Chat
+
+
+

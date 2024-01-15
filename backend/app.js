@@ -7,9 +7,12 @@ const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io')(server, { cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] } });
+const io = require('socket.io')(server, { cors: { origin: "*",methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+transports: ['polling', 'websocket'],
+  credentials: true, } });
 const PORT = 3000;
 let rows = [];
+let lastFileSize = 0; // Move this declaration outside the readCSVFile function
 
 
 app.use(function(req, res, next) {
@@ -19,8 +22,6 @@ app.use(function(req, res, next) {
 });
 
 function readCSVFile() {
-  let lastFileSize = 0;
-  const rows = [];
   const filePath = './python.ML/random_output.csv';
   const currentFileSize = fs.statSync(filePath).size;
   if (currentFileSize !== lastFileSize) {
@@ -29,24 +30,29 @@ function readCSVFile() {
       .pipe(csv())
       .on('data', (row) => {
         rows.push(row);
-      })
+      }) 
       .on('end', () => {
         const lastRow = rows[rows.length - 1];
-        const values = Object.values(lastRow);
-        console.log(values);
-        io.emit('lastRowValues', values); 
+        if (lastRow) {
+          const values = Object.values(lastRow);
+          console.log(values);
+          io.emit('lastRowValues', values); 
+        }
       });
     lastFileSize = currentFileSize;
   }
 }
 
-
-
 app.get('/sendData', (req, res) => {
   const lastRow = rows[rows.length - 1];
-  const values = Object.values(lastRow);
-  res.status(200).json({ lastRowValues: values });
+  if (lastRow) {
+    const values = Object.values(lastRow);
+    res.status(200).json({ lastRowValues: values });
+  } else {
+    res.status(404).json({ error: 'No data available' });
+  }
 });
+
 
 app.get('/csvdata', (req, res) => {
   const directoryPath = path.join(__dirname, 'csv');
@@ -80,7 +86,7 @@ app.get('/train', (req, res) => {
 
 setInterval(() => {
   readCSVFile();
-}, 15000);
+}, 2000);
 
 
 server.listen(PORT, () => {
